@@ -10,7 +10,14 @@
 
 # Output of the go coverage tool
 *.coverprofile
-
+controller/assignCustmorController.go
+controller/employLoginController.go  
+model/assignCustmorModel.go
+model/employLoginModel.go
+routes.rest
+routes/assignCustmorRouter.go        
+routes/employLoginRouter.go
+.gitignore
 # Dependency directories (remove the comment below if you use Go modules)
 vendor/
 

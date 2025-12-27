@@ -11,31 +11,61 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
+// func DBinstance() *mongo.Client {
+// 	err := godotenv.Load()
+//   	if err != nil {
+//     	log.Fatal("Error loading .env file")
+//     }
+// 	mongoDb := os.Getenv("MONGODB_URI")
+// 	fmt.Println("mongo_url",mongoDb)
+
+// 	client, err := mongo.Connect(options.Client().ApplyURI(mongoDb))
+
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+// 	defer cancel()
+
+// 	err = client.Ping(ctx, nil)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+
+	
+// 	fmt.Println("Connected to MongoDB")
+// 	return client
+// }
+
+
 func DBinstance() *mongo.Client {
-	err := godotenv.Load()
-  	if err != nil {
-    	log.Fatal("Error loading .env file")
-    }
+
+	// Load .env ONLY if present (local dev)
+	_ = godotenv.Load()
+
 	mongoDb := os.Getenv("MONGODB_URI")
-	fmt.Println("mongo_url",mongoDb)
+	if mongoDb == "" {
+		log.Fatal("MONGODB_URI not set")
+	}
+
+	fmt.Println("mongo_url:", mongoDb)
 
 	client, err := mongo.Connect(options.Client().ApplyURI(mongoDb))
-
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 
-	err = client.Ping(ctx, nil)
-	if err != nil {
+	if err := client.Ping(ctx, nil); err != nil {
 		log.Fatal(err)
 	}
 
-	
 	fmt.Println("Connected to MongoDB")
 	return client
 }
+
 
 var Client *mongo.Client = DBinstance()
 

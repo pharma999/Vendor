@@ -38,6 +38,9 @@
 // 	routes.VenderDataRoutes(router)
 // 	routes.ProductDetailRouter(router)
 
+// 	router.Run(":" + port)
+// }
+
 
 
 package main
@@ -71,7 +74,3 @@ func main() {
     log.Println("Server running on port", port)
     router.Run(":" + port)
 }
-
-
-// 	router.Run(":" + port)
-// }

@@ -30,4 +30,4 @@ go.work.sum
 # IDE/editor files
 .vscode/
 .idea/
-.env
+# .env

@@ -16,15 +16,27 @@ import (
 
 func main() {
 	//database.ConnectDB()
-	err := godotenv.Load()
-  	if err != nil {
-    	log.Fatal("Error loading .env file")
-    }
-	port := os.Getenv("PORT")
+	#err := godotenv.Load()
+  	#if err != nil {
+    #	log.Fatal("Error loading .env file")
+   # }
+	#port := os.Getenv("PORT")
 
-	if port == ""{
-		port = "8000"
-	}
+	#if port == ""{
+		#port = "8000"
+	#}
+
+	
+    // .env sirf local ke liye
+    _ = godotenv.Load()
+
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8000"
+    }
+
+  
+    
 
 	router := gin.New()
 	router.Use(gin.Logger())

@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
+	//"os"
 	"time"
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
+	"github.com/pharma999/vender/config"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
@@ -41,9 +42,9 @@ import (
 func DBinstance() *mongo.Client {
 
 	// Load .env ONLY if present (local dev)
-	_ = godotenv.Load()
+	config.LoadConfig()
 
-	mongoDb := os.Getenv("MONGODB_URI")
+	mongoDb := config.GetEnv("MONGODB_URI")
 	if mongoDb == "" {
 		log.Fatal("MONGODB_URI not set")
 	}

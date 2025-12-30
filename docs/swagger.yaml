@@ -1,0 +1,594 @@
+basePath: /api
+definitions:
+  enum.ProductType:
+    enum:
+    - QUICK
+    - SCHEDULE
+    - EMERGENCY
+    type: string
+    x-enum-varnames:
+    - Quick
+    - Schedule
+    - Emergency
+  enum.VenderData:
+    enum:
+    - UNVERIFIED
+    - VERIFIED
+    - REFIELD
+    type: string
+    x-enum-varnames:
+    - UnVerified
+    - Verified
+    - ReField
+  enum.VenderStatus:
+    enum:
+    - ACTIVE
+    - INACTIVE
+    - SUSPENDED
+    type: string
+    x-enum-varnames:
+    - Active
+    - Inactive
+    - Suspended
+  enum.VenderType:
+    enum:
+    - INDIVISUAL
+    - CLINIC
+    - HOSPITAL
+    type: string
+    x-enum-varnames:
+    - Indivisual
+    - Clinic
+    - Hospital
+  model.IndvisulVenderProfile:
+    properties:
+      _id:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      last_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      phone_number:
+        type: integer
+      refresh_token:
+        type: string
+      token:
+        type: string
+      updated_at:
+        type: string
+      vender_data:
+        allOf:
+        - $ref: '#/definitions/enum.VenderData'
+        enum:
+        - UNVERIFIED
+        - VERIFIED
+        - REFIELD
+      vender_id:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - phone_number
+    - vender_data
+    type: object
+  model.ProductDetail:
+    properties:
+      _id:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        description: ProductID       *uuid.UUID     `json:"product_id" bson:"product_id"
+          validate:"required"`
+        maxLength: 100
+        minLength: 2
+        type: string
+      last_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      phone_number:
+        type: integer
+      product_type:
+        allOf:
+        - $ref: '#/definitions/enum.ProductType'
+        enum:
+        - QUICK
+        - SCHEDULE
+        - EMERGENCY
+      refresh_token:
+        type: string
+      token:
+        type: string
+      updated_at:
+        type: string
+      vender_id:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - phone_number
+    - product_type
+    type: object
+  model.VenderProfile:
+    properties:
+      _id:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      last_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      phone_number:
+        type: integer
+      refresh_token:
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/enum.VenderStatus'
+        enum:
+        - ACTIVE
+        - INACTIVE
+        - SUSPENDED
+      token:
+        type: string
+      updated_at:
+        type: string
+      vender_id:
+        type: string
+      vender_type:
+        allOf:
+        - $ref: '#/definitions/enum.VenderType'
+        enum:
+        - INDIVISUAL
+        - CLINIC
+        - HOSPITAL
+    required:
+    - email
+    - first_name
+    - last_name
+    - phone_number
+    - status
+    - vender_type
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API for managing venders
+  title: Vender API
+  version: "1.0"
+paths:
+  /invender:
+    get:
+      consumes:
+      - application/json
+      description: Fetch all individual vender profiles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.IndvisulVenderProfile'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all individual venders
+      tags:
+      - IndividualVender
+  /invender/{vender_id}:
+    get:
+      consumes:
+      - application/json
+      description: Fetch individual vender profile using vender_id
+      parameters:
+      - description: Vender ID
+        in: path
+        name: vender_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.IndvisulVenderProfile'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get individual vender by ID
+      tags:
+      - IndividualVender
+    patch:
+      consumes:
+      - application/json
+      description: Update individual vender profile by ID
+      parameters:
+      - description: Vender ID
+        in: path
+        name: vender_id
+        required: true
+        type: string
+      - description: Updated vender data
+        in: body
+        name: vender
+        required: true
+        schema:
+          $ref: '#/definitions/model.IndvisulVenderProfile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update individual vender
+      tags:
+      - IndividualVender
+  /invender/{vender_type}:
+    post:
+      consumes:
+      - application/json
+      description: Create vender (INDIVISUAL / CLINIC / HOSPITAL)
+      parameters:
+      - description: Vender Type
+        in: path
+        name: vender_type
+        required: true
+        type: string
+      - description: Individual vender payload
+        in: body
+        name: vender
+        required: true
+        schema:
+          $ref: '#/definitions/model.IndvisulVenderProfile'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create vender by type
+      tags:
+      - IndividualVender
+  /product_detail:
+    get:
+      consumes:
+      - application/json
+      description: Fetch all product details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.ProductDetail'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all products
+      tags:
+      - Product
+    post:
+      consumes:
+      - application/json
+      description: Create a new product
+      parameters:
+      - description: Product payload
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductDetail'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create product
+      tags:
+      - Product
+  /product_detail/{vender_id}:
+    get:
+      consumes:
+      - application/json
+      description: Fetch product details using vender_id
+      parameters:
+      - description: Vender ID
+        in: path
+        name: vender_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ProductDetail'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get product by vender ID
+      tags:
+      - Product
+    patch:
+      consumes:
+      - application/json
+      description: Update product by vender_id
+      parameters:
+      - description: Vender ID
+        in: path
+        name: vender_id
+        required: true
+        type: string
+      - description: Updated product data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductDetail'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update product
+      tags:
+      - Product
+  /vender:
+    get:
+      consumes:
+      - application/json
+      description: Fetch all vender profiles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.VenderProfile'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all venders
+      tags:
+      - Vender
+    post:
+      consumes:
+      - application/json
+      description: Add a new vender profile
+      parameters:
+      - description: Vender Data
+        in: body
+        name: vender
+        required: true
+        schema:
+          $ref: '#/definitions/model.VenderProfile'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new vender
+      tags:
+      - Vender
+  /vender/{vender_id}:
+    get:
+      consumes:
+      - application/json
+      description: Fetch a vender using vender_id
+      parameters:
+      - description: Vender ID
+        in: path
+        name: vender_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.VenderProfile'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get vender by ID
+      tags:
+      - Vender
+    patch:
+      consumes:
+      - application/json
+      description: Update vender details by vender_id
+      parameters:
+      - description: Vender ID
+        in: path
+        name: vender_id
+        required: true
+        type: string
+      - description: Updated vender data
+        in: body
+        name: vender
+        required: true
+        schema:
+          $ref: '#/definitions/model.VenderProfile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update vender profile
+      tags:
+      - Vender
+swagger: "2.0"

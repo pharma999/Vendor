@@ -6,8 +6,11 @@ import (
 )
 
 func ProductDetailRouter(incomingRoutes *gin.Engine){
-	incomingRoutes.GET("/product_detail", controller.GetProductDetails())
-	incomingRoutes.GET("/product_detail/:vender_id", controller.GetProductDetail())
-	incomingRoutes.POST("/product_detail", controller.CreateProductDetail())
-	incomingRoutes.PATCH("/product_detail/:vender_id", controller.UpdateProductDetail())
+	routes := incomingRoutes.Group("/api")
+	{
+	routes.GET("/product_detail", controller.GetProductDetails())
+	routes.GET("/product_detail/:vender_id", controller.GetProductDetail())
+	routes.POST("/product_detail", controller.CreateProductDetail())
+	routes.PATCH("/product_detail/:vender_id", controller.UpdateProductDetail())
+	}
 }

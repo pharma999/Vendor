@@ -7,8 +7,11 @@ import (
 )
 
 func VenderDataRoutes(incomingRoutes *gin.Engine){
-	incomingRoutes.GET("/invender", controller.GetIndvisualVenders())
-	incomingRoutes.GET("/invender/:vender_id", controller.GetIndvisualVender())
-	incomingRoutes.POST("/invender/:vender_type", controller.CreateIndvisualVender())
-	incomingRoutes.PATCH("/invender/:vender_id", controller.UpdateIndvisualVender())
+	routes := incomingRoutes.Group("/api")
+	{
+	routes.GET("/invender", controller.GetIndvisualVenders())
+	routes.GET("/invender/:vender_id", controller.GetIndvisualVender())
+	routes.POST("/invender/:vender_type", controller.CreateIndvisualVender())
+	routes.PATCH("/invender/:vender_id", controller.UpdateIndvisualVender())
+	}
 }

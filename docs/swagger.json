@@ -1,0 +1,879 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API for managing venders",
+        "title": "Vender API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/api",
+    "paths": {
+        "/invender": {
+            "get": {
+                "description": "Fetch all individual vender profiles",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "IndividualVender"
+                ],
+                "summary": "Get all individual venders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.IndvisulVenderProfile"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/invender/{vender_id}": {
+            "get": {
+                "description": "Fetch individual vender profile using vender_id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "IndividualVender"
+                ],
+                "summary": "Get individual vender by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vender ID",
+                        "name": "vender_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.IndvisulVenderProfile"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update individual vender profile by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "IndividualVender"
+                ],
+                "summary": "Update individual vender",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vender ID",
+                        "name": "vender_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated vender data",
+                        "name": "vender",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.IndvisulVenderProfile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/invender/{vender_type}": {
+            "post": {
+                "description": "Create vender (INDIVISUAL / CLINIC / HOSPITAL)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "IndividualVender"
+                ],
+                "summary": "Create vender by type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vender Type",
+                        "name": "vender_type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Individual vender payload",
+                        "name": "vender",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.IndvisulVenderProfile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product_detail": {
+            "get": {
+                "description": "Fetch all product details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get all products",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.ProductDetail"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Create product",
+                "parameters": [
+                    {
+                        "description": "Product payload",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProductDetail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product_detail/{vender_id}": {
+            "get": {
+                "description": "Fetch product details using vender_id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get product by vender ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vender ID",
+                        "name": "vender_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ProductDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update product by vender_id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Update product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vender ID",
+                        "name": "vender_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated product data",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProductDetail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/vender": {
+            "get": {
+                "description": "Fetch all vender profiles",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Vender"
+                ],
+                "summary": "Get all venders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.VenderProfile"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a new vender profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Vender"
+                ],
+                "summary": "Create a new vender",
+                "parameters": [
+                    {
+                        "description": "Vender Data",
+                        "name": "vender",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.VenderProfile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/vender/{vender_id}": {
+            "get": {
+                "description": "Fetch a vender using vender_id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Vender"
+                ],
+                "summary": "Get vender by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vender ID",
+                        "name": "vender_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.VenderProfile"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update vender details by vender_id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Vender"
+                ],
+                "summary": "Update vender profile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vender ID",
+                        "name": "vender_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated vender data",
+                        "name": "vender",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.VenderProfile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "enum.ProductType": {
+            "type": "string",
+            "enum": [
+                "QUICK",
+                "SCHEDULE",
+                "EMERGENCY"
+            ],
+            "x-enum-varnames": [
+                "Quick",
+                "Schedule",
+                "Emergency"
+            ]
+        },
+        "enum.VenderData": {
+            "type": "string",
+            "enum": [
+                "UNVERIFIED",
+                "VERIFIED",
+                "REFIELD"
+            ],
+            "x-enum-varnames": [
+                "UnVerified",
+                "Verified",
+                "ReField"
+            ]
+        },
+        "enum.VenderStatus": {
+            "type": "string",
+            "enum": [
+                "ACTIVE",
+                "INACTIVE",
+                "SUSPENDED"
+            ],
+            "x-enum-varnames": [
+                "Active",
+                "Inactive",
+                "Suspended"
+            ]
+        },
+        "enum.VenderType": {
+            "type": "string",
+            "enum": [
+                "INDIVISUAL",
+                "CLINIC",
+                "HOSPITAL"
+            ],
+            "x-enum-varnames": [
+                "Indivisual",
+                "Clinic",
+                "Hospital"
+            ]
+        },
+        "model.IndvisulVenderProfile": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "phone_number",
+                "vender_data"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "phone_number": {
+                    "type": "integer"
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "vender_data": {
+                    "enum": [
+                        "UNVERIFIED",
+                        "VERIFIED",
+                        "REFIELD"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/enum.VenderData"
+                        }
+                    ]
+                },
+                "vender_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ProductDetail": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "phone_number",
+                "product_type"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "description": "ProductID       *uuid.UUID     `json:\"product_id\" bson:\"product_id\" validate:\"required\"`",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "phone_number": {
+                    "type": "integer"
+                },
+                "product_type": {
+                    "enum": [
+                        "QUICK",
+                        "SCHEDULE",
+                        "EMERGENCY"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/enum.ProductType"
+                        }
+                    ]
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "vender_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.VenderProfile": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "phone_number",
+                "status",
+                "vender_type"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                },
+                "phone_number": {
+                    "type": "integer"
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "status": {
+                    "enum": [
+                        "ACTIVE",
+                        "INACTIVE",
+                        "SUSPENDED"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/enum.VenderStatus"
+                        }
+                    ]
+                },
+                "token": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "vender_id": {
+                    "type": "string"
+                },
+                "vender_type": {
+                    "enum": [
+                        "INDIVISUAL",
+                        "CLINIC",
+                        "HOSPITAL"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/enum.VenderType"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

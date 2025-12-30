@@ -21,7 +21,15 @@ import(
 var productCollection *mongo.Collection = database.OpenCollection(database.Client, "product")
 //var venderCollection = database.OpenCollection("vender")
 
-
+// GetProductDetails godoc
+// @Summary Get all products
+// @Description Fetch all product details
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Success 200 {array} model.ProductDetail
+// @Failure 500 {object} map[string]string
+// @Router /product_detail [get]
 func GetProductDetails() gin.HandlerFunc{
 	return func(c *gin.Context){
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
@@ -30,14 +38,14 @@ func GetProductDetails() gin.HandlerFunc{
 		cursor, err := productCollection.Find(ctx, bson.D{})
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movies."})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch products."})
 		}
 		defer cursor.Close(ctx)
 
 		var venderProfiles []model.ProductDetail
 
 		if err = cursor.All(ctx, &venderProfiles); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode movies."})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode products."})
 			return
 		}
 
@@ -45,6 +53,17 @@ func GetProductDetails() gin.HandlerFunc{
 	}
 }
 
+// GetProductDetail godoc
+// @Summary Get product by vender ID
+// @Description Fetch product details using vender_id
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param vender_id path string true "Vender ID"
+// @Success 200 {object} model.ProductDetail
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Router /product_detail/{vender_id} [get]
 func GetProductDetail() gin.HandlerFunc{
 	return func(c *gin.Context){
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
@@ -74,6 +93,17 @@ func GetProductDetail() gin.HandlerFunc{
 	}
 }
 
+// CreateProductDetail godoc
+// @Summary Create product
+// @Description Create a new product
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param product body model.ProductDetail true "Product payload"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /product_detail [post]
 func CreateProductDetail() gin.HandlerFunc{
 	return func(c *gin.Context){
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
@@ -103,6 +133,19 @@ func CreateProductDetail() gin.HandlerFunc{
 	}
 }
 
+// UpdateProductDetail godoc
+// @Summary Update product
+// @Description Update product by vender_id
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param vender_id path string true "Vender ID"
+// @Param product body model.ProductDetail true "Updated product data"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /product_detail/{vender_id} [patch]
 func UpdateProductDetail() gin.HandlerFunc{
 	return func(c *gin.Context){
         ctx, cancel := context.WithTimeout(c, 100*time.Second)

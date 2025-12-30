@@ -21,7 +21,15 @@ var validate = validator.New()
 var venderCollection *mongo.Collection = database.OpenCollection(database.Client, "vender")
 //var venderCollection = database.OpenCollection("vender")
 
-
+// GetVenders godoc
+// @Summary Get all venders
+// @Description Fetch all vender profiles
+// @Tags Vender
+// @Accept json
+// @Produce json
+// @Success 200 {array} model.VenderProfile
+// @Failure 500 {object} map[string]string
+// @Router /vender [get]
 func GetVenders() gin.HandlerFunc{
 	return func(c *gin.Context){
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
@@ -45,6 +53,18 @@ func GetVenders() gin.HandlerFunc{
 	}
 }
 
+
+// GetVender godoc
+// @Summary Get vender by ID
+// @Description Fetch a vender using vender_id
+// @Tags Vender
+// @Accept json
+// @Produce json
+// @Param vender_id path string true "Vender ID"
+// @Success 200 {object} model.VenderProfile
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Router /vender/{vender_id} [get]
 func GetVender() gin.HandlerFunc{
 	return func(c *gin.Context){
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
@@ -74,6 +94,18 @@ func GetVender() gin.HandlerFunc{
 	}
 }
 
+
+// CreateVender godoc
+// @Summary Create a new vender
+// @Description Add a new vender profile
+// @Tags Vender
+// @Accept json
+// @Produce json
+// @Param vender body model.VenderProfile true "Vender Data"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /vender [post]
 func CreateVender() gin.HandlerFunc{
 	return func(c *gin.Context){
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
@@ -104,6 +136,19 @@ func CreateVender() gin.HandlerFunc{
 	}
 }
 
+// UpdateVender godoc
+// @Summary Update vender profile
+// @Description Update vender details by vender_id
+// @Tags Vender
+// @Accept json
+// @Produce json
+// @Param vender_id path string true "Vender ID"
+// @Param vender body model.VenderProfile true "Updated vender data"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /vender/{vender_id} [patch]
 func UpdateVender() gin.HandlerFunc{
 	return func(c *gin.Context){
         ctx, cancel := context.WithTimeout(c, 100*time.Second)

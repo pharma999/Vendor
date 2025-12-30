@@ -21,7 +21,15 @@ import(
 var indvisulVenderCollection *mongo.Collection = database.OpenCollection(database.Client, "invender")
 //var venderCollection = database.OpenCollection("vender")
 
-
+// GetIndvisualVenders godoc
+// @Summary Get all individual venders
+// @Description Fetch all individual vender profiles
+// @Tags IndividualVender
+// @Accept json
+// @Produce json
+// @Success 200 {array} model.IndvisulVenderProfile
+// @Failure 500 {object} map[string]string
+// @Router /invender [get]
 func GetIndvisualVenders() gin.HandlerFunc{
 	return func(c *gin.Context){
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
@@ -45,6 +53,17 @@ func GetIndvisualVenders() gin.HandlerFunc{
 	}
 }
 
+// GetIndvisualVender godoc
+// @Summary Get individual vender by ID
+// @Description Fetch individual vender profile using vender_id
+// @Tags IndividualVender
+// @Accept json
+// @Produce json
+// @Param vender_id path string true "Vender ID"
+// @Success 200 {object} model.IndvisulVenderProfile
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Router /invender/{vender_id} [get]
 func GetIndvisualVender() gin.HandlerFunc{
 	return func(c *gin.Context){
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
@@ -74,6 +93,18 @@ func GetIndvisualVender() gin.HandlerFunc{
 	}
 }
 
+// CreateIndvisualVender godoc
+// @Summary Create vender by type
+// @Description Create vender (INDIVISUAL / CLINIC / HOSPITAL)
+// @Tags IndividualVender
+// @Accept json
+// @Produce json
+// @Param vender_type path string true "Vender Type"
+// @Param vender body model.IndvisulVenderProfile true "Individual vender payload"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /invender/{vender_type} [post]
 func CreateIndvisualVender() gin.HandlerFunc{
 	return func(c *gin.Context){
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
@@ -153,6 +184,19 @@ func CreateIndvisualVender() gin.HandlerFunc{
 	}
 }
 
+// UpdateIndvisualVender godoc
+// @Summary Update individual vender
+// @Description Update individual vender profile by ID
+// @Tags IndividualVender
+// @Accept json
+// @Produce json
+// @Param vender_id path string true "Vender ID"
+// @Param vender body model.IndvisulVenderProfile true "Updated vender data"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /invender/{vender_id} [patch]
 func UpdateIndvisualVender() gin.HandlerFunc{
 	return func(c *gin.Context){
         ctx, cancel := context.WithTimeout(c, 100*time.Second)

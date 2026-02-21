@@ -1,34 +1,26 @@
-# Stage 1: Build Go binary
-FROM golang:1.25.1 AS builder
-WORKDIR /app
+# Stage 1: Build
+FROM golang:1.25.1-alpine AS builder
 
-# Install swag
-RUN go install github.com/swaggo/swag/cmd/swag@latest
+WORKDIR /app
 
 COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
 
-# Generate swagger docs
-RUN /go/bin/swag init -g main.go
-
-# Build binary
+# Disable CGO to create static binary
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main .
 
-# Stage 2: Runtime image
-FROM ubuntu:22.04
+# Stage 2: Minimal runtime
+FROM alpine:3.20
 
-RUN apt-get update && \
-    apt-get install -y ca-certificates tzdata && \
-    ln -fs /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && \
-    dpkg-reconfigure -f noninteractive tzdata && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache ca-certificates tzdata
 
 WORKDIR /app
 
 COPY --from=builder /app/main .
-COPY --from=builder /app/docs ./docs   # if swagger docs needed
 COPY .env .
+
+EXPOSE 8080
 
 CMD ["./main"]
